@@ -1,3 +1,8 @@
+# Author: Rildo Henrique
+# Date: 2025-05-10
+# Description: This script extracts data from a public API, transforms it into a DataFrame, and loads it into a CSV file.
+
+# Importing necessary libraries
 import requests
 import json
 from datetime import datetime
@@ -8,6 +13,7 @@ from pprint import pprint
 link = 'https://dummyjson.com/products'
 columns = ['id', 'title', 'price', 'description', 'discountPercentage', 'rating', 'stock', 'brand', 'category', 'thumbnail']
 
+# Function to extract data from the API
 def extract(link):
     ret = requests.get(link)
     if ret.status_code == 200:
@@ -16,6 +22,7 @@ def extract(link):
         print(f"Error ao extrair dados da API: {ret.status_code}")
         return None
     
+# Function to transform the extracted data into a DataFrame   
 def transform(data):
     if data is None:
         return None
@@ -34,6 +41,7 @@ def transform(data):
 
     return df
 
+# Function to load the transformed data into a CSV file
 def load(data):
     data_ini = time.time()
     data.to_csv('products.csv', index=True)
@@ -41,6 +49,7 @@ def load(data):
     tempo = data_fim - data_ini
     print(f"Tempo de execução: {tempo:.2f} segundos")    
 
+# Main function to run the ETL process
 def run():
     data = extract(link)
     if data is not None:
@@ -53,6 +62,6 @@ def run():
     else:
         print("Sem dados para transformar.")
 
-
+# Function to print the DataFrame
 if __name__ == "__main__":
     run()
